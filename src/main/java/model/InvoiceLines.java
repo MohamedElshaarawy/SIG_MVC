@@ -15,13 +15,21 @@ public class InvoiceLines {
     private String itemName;
     private double itemPrice;
     private int count;
-  //  private InvoiceHeader invoiceHeader;
+    private InvoiceHeader invoiceHeader;
 
     
     InvoiceLines()
     {}
+
+    public InvoiceLines( String itemName, double itemPrice, int count, InvoiceHeader invoiceHeader) {
+//        this.invoiceNum = invoiceNum;
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.count = count;
+        this.invoiceHeader = invoiceHeader;
+    }
     
-     InvoiceLines(int invoiceNum, String itemName, double ItemPrice, int count) {
+     public InvoiceLines(int invoiceNum, String itemName, double ItemPrice, int count) {
         this.invoiceNum = invoiceNum;
         this.itemName = itemName;
         this.itemPrice = ItemPrice;
@@ -45,8 +53,8 @@ public class InvoiceLines {
         return invoiceNum;
     }
 
-    public void setInvoice(int invoice) {
-        this.invoiceNum = invoice;
+    public void setInvoice(int invoiceNum) {
+        this.invoiceNum = invoiceNum;
     }
 
     public String getItemName() {
@@ -68,6 +76,14 @@ public class InvoiceLines {
     @Override
     public String toString() {
         return "invoiceItem{" + "itemName=" + itemName + ", ItemPrice=" + itemPrice + ", count=" + count + '}';
+    }
+
+    public InvoiceHeader getInvoiceHeader() {
+        return invoiceHeader;
+    }
+
+    public void setInvoiceHeader(InvoiceHeader invoiceHeader) {
+        this.invoiceHeader = invoiceHeader;
     }
     
  

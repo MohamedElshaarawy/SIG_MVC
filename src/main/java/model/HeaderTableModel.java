@@ -12,22 +12,19 @@ import view.SigView;
  *
  * @author mshaarawy
  */
-public class HeaderTableModel extends AbstractTableModel{
-    
-    String[] columns ={"Num","Customer","Date","Total"};
+public class HeaderTableModel extends AbstractTableModel {
+
+    String[] columns = {"Num", "Customer", "Date", "Total"};
     ArrayList<InvoiceHeader> headers;
-    
-     
+    SigView frame;
 
     public HeaderTableModel(ArrayList<InvoiceHeader> headers) {
-        this.headers=headers;
+        this.headers = headers;
     }
-    
-    
-    
-       @Override
+
+    @Override
     public int getRowCount() {
-        return 3;
+        return headers.size();
     }
 
     @Override
@@ -42,18 +39,22 @@ public class HeaderTableModel extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+
         InvoiceHeader header = headers.get(rowIndex);
-        switch(columnIndex){
+        switch (columnIndex) {
             case 0:
-                return header.getInvoieNum();
-                
+                return header.getInvoiceNum();
+
             case 1:
                 return header.getCustomer();
             case 2:
                 return SigView.sdf.format(header.getDate());
+            case 3:
+                return header.getTotal();
         }
         
+
         return "";
     }
-    
+
 }
