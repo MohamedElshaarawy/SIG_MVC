@@ -8,6 +8,7 @@ import controller.Controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.HeaderTableModel;
@@ -133,12 +136,24 @@ public class SigView extends javax.swing.JFrame {
 
         deleteInvoiceBtn.setText("Delete Invoice");
 
-        saveBtn.setText("Save");
+        saveBtn.setText("Create New Line");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
 
-        cancelBtn.setText("Cancel");
+        cancelBtn.setText("Delete Line");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
 
+        invoiceDateTxt.setEditable(false);
         invoiceDateTxt.setToolTipText("");
 
+        customerNameTxt.setEditable(false);
         customerNameTxt.setToolTipText("");
 
         jMenu1.setText("File");
@@ -199,16 +214,7 @@ public class SigView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(createNewInvoiceBtn)
-                            .addComponent(deleteInvoiceBtn)
-                            .addComponent(saveBtn)
-                            .addComponent(cancelBtn))
-                        .addGap(70, 70, 70))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -228,14 +234,29 @@ public class SigView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(createNewInvoiceBtn)
+                    .addComponent(deleteInvoiceBtn)
+                    .addComponent(saveBtn)
+                    .addComponent(cancelBtn))
+                .addGap(70, 70, 70))
         );
 
         cancelBtn.addActionListener(listener);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,7 +292,11 @@ public class SigView extends javax.swing.JFrame {
                 
                 SigView sigView = new SigView();
                 try {
-                    sigView.listener.loadFile("\\resrouces\\InvoiceHeader.csv","\\resrouces\\InvoiceLine.csv");
+                    try {
+                        sigView.listener.loadFile("\\resources\\InvoiceHeader.csv","\\resources\\InvoiceLine.csv");
+                    } catch (ParseException ex) {
+                        Logger.getLogger(SigView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(SigView.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -306,11 +331,48 @@ public class SigView extends javax.swing.JFrame {
     private javax.swing.JButton saveBtn;
     private javax.swing.JMenuItem saveFileMenuItem;
     // End of variables declaration//GEN-END:variables
+    
     private Controller listener = new Controller(this);
-    private ArrayList<InvoiceHeader> invoiceHeaders = new ArrayList<>();
+    private ArrayList<InvoiceHeader> invoices = new ArrayList<>();
+    private ArrayList<InvoiceLines> lines = new ArrayList<>();
+
     public static DateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
     private HeaderTableModel headerTableModel;
     private LinesTableModel linesTableModel;
+
+//    private LinesTableModel invoiceTableModel;
+//    public LinesTableModel getInvoiceTableModel() {
+//        return invoiceTableModel;
+//    }
+//
+//    public void setInvoiceTableModel(LinesTableModel invoiceTableModel) {
+//        this.invoiceTableModel = invoiceTableModel;
+//    }
+
+    public ArrayList<InvoiceLines> getLines() {
+        return lines;
+    }
+
+    public void setLines(ArrayList<InvoiceLines> lines) {
+        this.lines = lines;
+    }
+         
+
+    public JTable getInvoiceLines() {
+        return invoiceLines;
+    }
+
+    public void setInvoiceLines(JTable invoiceLines) {
+        this.invoiceLines = invoiceLines;
+    }
+
+    public JTable getInvoicesTable() {
+        return invoicesTable;
+    }
+
+    public void setInvoicesTable(JTable invoicesTable) {
+        this.invoicesTable = invoicesTable;
+    }
 
     public HeaderTableModel getHeaderTableModel() {
         return headerTableModel;
@@ -344,17 +406,23 @@ public class SigView extends javax.swing.JFrame {
         this.customerNameTxt.setText(customerName);
     }
 
-    public LocalDate getInvoiceDateTxt() {
-        return LocalDate.parse(invoiceDateTxt.getText());
+    public JTextField getInvoiceDateTxt() {
+        return invoiceDateTxt;
     }
+
+   
 
     public void setInvoiceDateTxt(LocalDate localDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         this.invoiceDateTxt.setText(localDate.format(formatter));
     }
 
-    public int getInvoiceNumLbL() {
-        return Integer.parseInt(invoiceNumLbL.getText());
+    public JLabel getInvoiceTatolLbl() {
+        return invoiceTatolLbl;
+    }
+
+    public JLabel getInvoiceNumLbL() {
+        return invoiceNumLbL;
     }
 
     public void setInoviceTable() {
@@ -369,9 +437,7 @@ public class SigView extends javax.swing.JFrame {
         this.invoiceTatolLbl.setText(invoiceTotal);
     }
 
-    public void setInoviceItemTable() {
-        //Todo 
-    }
+  
 
 //    public String getInvoiceHeaderfilePath() {
 //        return invoiceHeaderfilePath;
@@ -413,5 +479,16 @@ public class SigView extends javax.swing.JFrame {
 //    }
 //    return null;
 //    }
-
+    
+    public ArrayList<InvoiceHeader> getInvoices(){
+    return invoices;
+    }
+    
+    public InvoiceHeader getInvoiceByNum(int num){
+    for(InvoiceHeader inv:invoices)
+        if(inv.getInvoiceNum()==num){
+            return inv;
+        }
+    return null;
+    }   
 }
